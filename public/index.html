@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Commit</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="css/better-style.css">
+    </head>
+    <body>
+        <h1>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                x="0px"
+                y="0px"
+                width="100px" height="100px"
+                viewBox="0 0 100 100"
+                xml:space="preserve"
+            >
+                <path
+                    d="M3.333,53.332C1.492,53.332,0,51.837,0,50C0,22.431,22.431,0,50.003,0  C77.569,0,100,22.431,100,49.997c0,1.837-1.495,3.332-3.336,3.332c-1.837,0-3.332-1.495-3.332-3.332  c0-23.896-19.439-43.332-43.329-43.332C26.104,6.665,6.665,26.102,6.665,50C6.665,51.837,5.173,53.332,3.333,53.332"
+                />
+                <path
+                    d="M49.936,66.629c-20.056,0-17.089-24.365-17.089-24.365s3.424-7.721,17.089-7.721  c13.669,0,17.233,7.721,17.233,7.721S69.986,66.629,49.936,66.629 M50,26.666c-20.947,0-27.048,18.934-27.048,63.349v1.999  C30.756,97.046,40.021,100,50,100c9.977,0,19.241-2.954,27.045-7.986v-1.999C77.045,45.6,70.947,26.666,50,26.666"
+                />
+            </svg>
+            <span>
+                Do
+            </span>
+        </h1>
+        <a href="#add" class="add-new">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                x="0px"
+                y="0px"
+                width="100px"
+                height="100px"
+                viewBox="0 0 100 100"
+                enable-background="new 0 0 100 100"
+                xml:space="preserve"
+            >
+                <path
+                    d="M50,100C22.43,100,0,77.57,0,50C0,22.43,22.43,0,50,0c27.57,0,50,22.43,50,50C100,77.57,77.57,100,50,100z M50,9.235   C27.522,9.235,9.235,27.522,9.235,50S27.522,90.765,50,90.765c22.478,0,40.765-18.287,40.765-40.765S72.478,9.235,50,9.235z"
+                />
+                <path
+                    d="M74.632,44.869H55.13v-19.5c0-2.834-2.297-5.13-5.13-5.13c-2.834,0-5.13,2.297-5.13,5.13v19.5H25.368   c-2.834,0-5.13,2.297-5.13,5.13c0,2.834,2.297,5.13,5.13,5.13H44.87v19.501c0,2.834,2.297,5.13,5.13,5.13   c2.834,0,5.13-2.297,5.13-5.13V55.13h19.501c2.834,0,5.13-2.297,5.13-5.13C79.762,47.166,77.465,44.869,74.632,44.869z"
+                />
+            </svg>
+        </a>
+        <div id="habits"></div>
+
+
+        <form method="post" action="/add_habit" id="add" class="add-habit-form">
+            <div class="inner">
+                <h2>Create Habit</h2>
+                <input type="text" name="name">
+                <input type="submit" value="Save">
+                <a href="#" class="close">
+                    Close
+                </a>
+            </div>
+        </form>
+
+
+        <script src="http://cdn.pubnub.com/pubnub.min.js" ></script>
+        <script src="reqwest.js" ></script>
+        <script src="lib/react/react.js"></script>
+        <script src="lib/hammerjs/hammer.min.js"></script>
+
+
+        <script>
+            (function(){
+                var pubnub = window.pubnub = PUBNUB.init({
+                    subscribe_key : 'demo'
+                });
+                document.addEventListener('submit', function(e){
+                    if (e.target.id === 'add') {
+                        console.log('the add form submitted');
+                    }else{
+                        e.preventDefault();
+                        var idvalue = e.target.querySelector('[name=id]').value;
+                        reqwest({
+                            url: '/'
+                            , method: 'post'
+                            , data: { id: idvalue }
+                            , success: function (resp) {}
+                        });
+                    }
+                }, true);
+
+
+                var hammertime = Hammer(document).on(
+                    "dragleft",
+                    function(e) {
+                        var parent = e.target.parentNode;
+
+                        if (parent.classList.contains('habit-form')) {
+                            parent.classList.add('show-remove');
+                        }
+                    }
+                );
+                var hammertime = Hammer(document).on(
+                    "dragright",
+                    function(e) {
+                        var parent = e.target.parentNode;
+
+                        if (parent.classList.contains('show-remove')) {
+                            parent.classList.remove('show-remove');
+                        }
+                    }
+                );
+            })();
+        </script>
+
+
+
+
+        <script src="do.js"></script>
+    </body>
+</html>
